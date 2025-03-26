@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
+from sklearn.preprocessing import LabelEncoder
 
 #chargement des donnees
 data = pd.read_csv('rendement_mais.csv')
@@ -42,11 +43,12 @@ plt.tight_layout()
 # plt.show()
 
 #Selection toutes sauf type_sol qui est un string
-variables_numeriques = data[['SURFACE_HA', 'ENGRAIS_KG_HA', 'PRECIPITATIONS_MM', 'TEMPERATURE_C', 'RENDEMENT_T_HA']]
+
 
 #matrice de corelation
-corr_matrix = variables_numeriques.corr()
-
+encoder = LabelEncoder()
+data["TYPE_SOL"] = encoder.fit_transform(data['TYPE_SOL'])
+corr_matrix = data.corr()
 plt.figure(figsize=(8, 6))
 sns.heatmap(corr_matrix, annot=True)
 plt.title("Matrice de Correlation")
